@@ -10,11 +10,11 @@ var FROG = FROG || {};
 FROG.TBT = FROG.TBT || {};
 
 /*:
- * @plugindesc v1.0 Add traits as characters advance their rank in a talent
+ * @plugindesc v1.1 Add traits as characters advance their rank in a talent
  * @author Frogboy
  *
  * @help
- * Talent Based Traits v1.0
+ * Talent Based Traits v1.1
  * Author Frogboy
  *
  * ============================================================================
@@ -61,6 +61,10 @@ FROG.TBT = FROG.TBT || {};
  *
  * Description - This is text that you’ll want to enter so that you’ll know
  * what that particular talent-based trait is.
+ *
+ * Name - When a player is adding ranks in the Talents screen, this text will
+ * display to let them know what new ability they will learn if they advance
+ * their talent to this level.
  *
  * Talent Abbr - Enter in the Talent Abbreviation that you set up in the
  * FROG_TalentCore plugin.
@@ -137,6 +141,7 @@ FROG.TBT = FROG.TBT || {};
  * ============================================================================
  *
  * Version 1.0 - Initial release
+ * Version 1.1 - Notifies the player what ability they'll learn when ranking up
  *
  * ============================================================================
  *
@@ -291,6 +296,10 @@ FROG.TBT = FROG.TBT || {};
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
  *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
+ *
  * @param Talent Abbr
  * @type string
  * @desc The talent that will gain the trait.
@@ -323,6 +332,10 @@ FROG.TBT = FROG.TBT || {};
  * @param Description
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
+ *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
  *
  * @param Talent Abbr
  * @type string
@@ -371,6 +384,10 @@ FROG.TBT = FROG.TBT || {};
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
  *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
+ *
  * @param Talent Abbr
  * @type string
  * @desc The talent that will gain the trait.
@@ -402,6 +419,10 @@ FROG.TBT = FROG.TBT || {};
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
  *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
+ *
  * @param Talent Abbr
  * @type string
  * @desc The talent that will gain the trait.
@@ -425,6 +446,10 @@ FROG.TBT = FROG.TBT || {};
  * @param Description
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
+ *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
  *
  * @param Talent Abbr
  * @type string
@@ -472,6 +497,10 @@ FROG.TBT = FROG.TBT || {};
  * @param Description
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
+ *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
  *
  * @param Talent Abbr
  * @type string
@@ -524,6 +553,10 @@ FROG.TBT = FROG.TBT || {};
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
  *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
+ *
  * @param Talent Abbr
  * @type string
  * @desc The talent that will gain the trait.
@@ -575,6 +608,10 @@ FROG.TBT = FROG.TBT || {};
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
  *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
+ *
  * @param Talent Abbr
  * @type string
  * @desc The talent that will gain the trait.
@@ -600,6 +637,10 @@ FROG.TBT = FROG.TBT || {};
  * @param Description
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
+ *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
  *
  * @param Talent Abbr
  * @type string
@@ -632,6 +673,10 @@ FROG.TBT = FROG.TBT || {};
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
  *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
+ *
  * @param Talent Abbr
  * @type string
  * @desc The talent that will gain the trait.
@@ -657,6 +702,10 @@ FROG.TBT = FROG.TBT || {};
  * @param Description
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
+ *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
  *
  * @param Talent Abbr
  * @type string
@@ -684,6 +733,10 @@ FROG.TBT = FROG.TBT || {};
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
  *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
+ *
  * @param Talent Abbr
  * @type string
  * @desc The talent that will gain the trait.
@@ -710,6 +763,10 @@ FROG.TBT = FROG.TBT || {};
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
  *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
+ *
  * @param Talent Abbr
  * @type string
  * @desc The talent that will gain the trait.
@@ -733,6 +790,10 @@ FROG.TBT = FROG.TBT || {};
  * @param Description
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
+ *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
  *
  * @param Talent Abbr
  * @type string
@@ -760,6 +821,10 @@ FROG.TBT = FROG.TBT || {};
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
  *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
+ *
  * @param Talent Abbr
  * @type string
  * @desc The talent that will gain the trait.
@@ -785,6 +850,10 @@ FROG.TBT = FROG.TBT || {};
  * @param Description
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
+ *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
  *
  * @param Talent Abbr
  * @type string
@@ -814,6 +883,10 @@ FROG.TBT = FROG.TBT || {};
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
  *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
+ *
  * @param Talent Abbr
  * @type string
  * @desc The talent that will gain the trait.
@@ -839,6 +912,10 @@ FROG.TBT = FROG.TBT || {};
  * @param Description
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
+ *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
  *
  * @param Talent Abbr
  * @type string
@@ -871,6 +948,10 @@ FROG.TBT = FROG.TBT || {};
  * @param Description
  * @type string
  * @desc Description so you know what this is. Recommended but not required.
+ *
+ * @param Name
+ * @type string
+ * @desc This is used in the help box to let the player know what they're gaining by advancing this Talent.
  *
  * @param Talent Abbr
  * @type string
@@ -925,6 +1006,7 @@ FROG.TBT = FROG.TBT || {};
 	FROG.TBT.actionTimes = (FROG.TBT.prm['Action Times']) ? JSON.parse(FROG.TBT.prm['Action Times']) : [];
 	FROG.TBT.specialFlag = (FROG.TBT.prm['Special Flag']) ? JSON.parse(FROG.TBT.prm['Special Flag']) : [];
 	FROG.TBT.partyAbility = (FROG.TBT.prm['Party Ability']) ? JSON.parse(FROG.TBT.prm['Party Ability']) : [];
+    if ($dataTalents) $dataTalents.traitRewardsImported = false;
 
 	// Initialize actor properties
 	Game_Actor.prototype.initTalentTraits = function() {
@@ -974,6 +1056,7 @@ FROG.TBT = FROG.TBT || {};
 		this.addTraitGroupTalent(FROG.TBT.actionTimes, 61, "N/A", "Percentage");
 		this.addTraitGroupTalent(FROG.TBT.specialFlag, 62, "Special Flag", "N/A");
 		this.addTraitGroupTalent(FROG.TBT.partyAbility, 64, "Party Ability", "N/A");
+        if ($dataTalents) $dataTalents.traitRewardsImported = true;
 	}
 
 	/** Adds traits to an actor
@@ -987,6 +1070,7 @@ FROG.TBT = FROG.TBT || {};
 			for (var i=0; i<traitArray.length; i++) {
 				var trait = JSON.parse(traitArray[i]);
 				if (!trait["Talent Abbr"] || isNaN(trait["Start Rank"]) || isNaN(trait["End Rank"])) continue;
+                var name = trait["Name"] || "";
 				var abbr = trait["Talent Abbr"].toLowerCase().trim();
 				var startRank = parseInt(trait["Start Rank"]);
 				var endRank = parseInt(trait["End Rank"]);
@@ -1014,6 +1098,18 @@ FROG.TBT = FROG.TBT || {};
 						}
 					}
 				}
+
+                // Import trait rewards for FROG_TalentCore
+                if ($dataTalents && !$dataTalents.traitRewardsImported && name && startRank > 0) {
+                    if (!$dataTalents.traitRewards) $dataTalents.traitRewards = [];
+                    if (!$dataTalents.traitRewards[abbr]) $dataTalents.traitRewards[abbr] = [];
+
+                    $dataTalents.traitRewards[abbr].push({
+                        name: name,
+                        rank: startRank,
+                        end: endRank
+                    });
+                }
 			}
 		}
 	}
