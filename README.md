@@ -25,6 +25,8 @@ Install this plugin as well as the FROG_TalentCore plugin.  Configure your Talen
 
 **Description** - This is text that you’ll want to enter so that you’ll know what that particular talent-based trait is.
 
+**Name** - When a player is adding ranks in the Talents screen, this text will display to let them know what new ability they will learn if they advance their talent to this level.
+
 **Talent Abbr** - Enter in the Talent Abbreviation that you set up in the FROG_TalentCore plugin.
 
 **Start Level** - This is the talent level/score that the actor this trait.
@@ -94,3 +96,4 @@ This plugin can be used in commercial or non-commercial projects.  Credit Frogbo
 ## Changelog
 
 Version 1.0 - Initial release
+Version 1.1 - Notifies the player what abilities they'll learn when ranking up
