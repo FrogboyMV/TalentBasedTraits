@@ -10,11 +10,11 @@ var FROG = FROG || {};
 FROG.TBT = FROG.TBT || {};
 
 /*:
- * @plugindesc v1.1 Add traits as characters advance their rank in a talent
+ * @plugindesc v1.2 Add traits as characters advance their rank in a talent
  * @author Frogboy
  *
  * @help
- * Talent Based Traits v1.1
+ * Talent Based Traits v1.2
  * Author Frogboy
  *
  * ============================================================================
@@ -142,11 +142,21 @@ FROG.TBT = FROG.TBT || {};
  *
  * Version 1.0 - Initial release
  * Version 1.1 - Notifies the player what ability they'll learn when ranking up
+ * Version 1.2 - Alter and save $dataTalentBasedTraits object
  *
  * ============================================================================
  *
  * @param Talent Based Traits
  * @param Rate
+ *
+ * @param Save Traits Object
+ * @parent Talent Based Traits
+ * @type boolean
+ * @desc Changes to $dataTalentBasedTraits can be made in-game and is persisted.
+ * @default false
+ * @on Yes
+ * @off No
+ *
  * @parent Talent Based Traits
  * @param Param
  * @parent Talent Based Traits
@@ -985,28 +995,45 @@ FROG.TBT = FROG.TBT || {};
  * @value 5
  */
 
+$dataTalentBasedTraits = {};
+
 (function() {
-	FROG.TBT.prm = PluginManager.parameters('FROG_TalentBasedTraits');
-	FROG.TBT.elementRate = (FROG.TBT.prm['Element Rate']) ? JSON.parse(FROG.TBT.prm['Element Rate']) : [];
-	FROG.TBT.debuffRate = (FROG.TBT.prm['Debuff Rate']) ? JSON.parse(FROG.TBT.prm['Debuff Rate']) : [];
-	FROG.TBT.stateRate = (FROG.TBT.prm['State Rate']) ? JSON.parse(FROG.TBT.prm['State Rate']) : [];
-	FROG.TBT.stateResist = (FROG.TBT.prm['State Resist']) ? JSON.parse(FROG.TBT.prm['State Resist']) : [];
-	FROG.TBT.parameter = (FROG.TBT.prm['Parameter']) ? JSON.parse(FROG.TBT.prm['Parameter']) : [];
-	FROG.TBT.exParameter = (FROG.TBT.prm['Ex-Parameter']) ? JSON.parse(FROG.TBT.prm['Ex-Parameter']) : [];
-	FROG.TBT.spParameter = (FROG.TBT.prm['Sp-Parameter']) ? JSON.parse(FROG.TBT.prm['Sp-Parameter']) : [];
-	FROG.TBT.attackElement = (FROG.TBT.prm['Attack Element']) ? JSON.parse(FROG.TBT.prm['Attack Element']) : [];
-	FROG.TBT.attackState = (FROG.TBT.prm['Attack State']) ? JSON.parse(FROG.TBT.prm['Attack State']) : [];
-	FROG.TBT.attackSpeed = (FROG.TBT.prm['Attack Speed']) ? JSON.parse(FROG.TBT.prm['Attack Speed']) : [];
-	FROG.TBT.extraAttacks = (FROG.TBT.prm['Extra Attacks']) ? JSON.parse(FROG.TBT.prm['Extra Attacks']) : [];
-	FROG.TBT.addSkillType = (FROG.TBT.prm['Add Skill Type']) ? JSON.parse(FROG.TBT.prm['Add Skill Type']) : [];
-	FROG.TBT.addSkill = (FROG.TBT.prm['Add Skill']) ? JSON.parse(FROG.TBT.prm['Add Skill']) : [];
-	FROG.TBT.equipWeapon = (FROG.TBT.prm['Equip Weapon']) ? JSON.parse(FROG.TBT.prm['Equip Weapon']) : [];
-	FROG.TBT.equipArmor = (FROG.TBT.prm['Equip Armor']) ? JSON.parse(FROG.TBT.prm['Equip Armor']) : [];
-	FROG.TBT.slotType = (FROG.TBT.prm['Slot Type']) ? JSON.parse(FROG.TBT.prm['Slot Type']) : [];
-	FROG.TBT.actionTimes = (FROG.TBT.prm['Action Times']) ? JSON.parse(FROG.TBT.prm['Action Times']) : [];
-	FROG.TBT.specialFlag = (FROG.TBT.prm['Special Flag']) ? JSON.parse(FROG.TBT.prm['Special Flag']) : [];
-	FROG.TBT.partyAbility = (FROG.TBT.prm['Party Ability']) ? JSON.parse(FROG.TBT.prm['Party Ability']) : [];
     if ($dataTalents) $dataTalents.traitRewardsImported = false;
+
+    /* ---------------------------------------------------------------*\
+                                Data Manager
+    \* -------------------------------------------------------------- */
+
+    FROG.TBT.DataManager_IsDatabaseLoaded = DataManager.isDatabaseLoaded;
+    DataManager.isDatabaseLoaded = function () {
+        if (!FROG.TBT.DataManager_IsDatabaseLoaded.call(this)) return false;
+        FROG.Core.jsonParams(PluginManager.parameters('FROG_TalentBasedTraits'), $dataTalentBasedTraits);
+        //console.log($dataTalentBasedTraits);
+        return true;
+    }
+
+    // Save File
+    FROG.TBT.DataManager_MakeSaveContents = DataManager.makeSaveContents;
+    DataManager.makeSaveContents = function() {
+        var contents = FROG.TBT.DataManager_MakeSaveContents.call(this);
+        if ($dataTalentBasedTraits.saveTraitsObject === true) {
+            contents.talents = $dataTalentBasedTraits;
+        }
+        return contents;
+    }
+
+    // Load File
+    FROG.TBT.DataManager_ExtractSaveContents = DataManager.extractSaveContents;
+    DataManager.extractSaveContents = function(contents) {
+        FROG.TBT.DataManager_ExtractSaveContents.call(this, contents);
+        if ($dataTalentBasedTraits.saveTraitsObject === true) {
+            $dataTalentBasedTraits = contents.talents;
+        }
+    }
+
+    /* ---------------------------------------------------------------*\
+                                Game Actor
+    \* -------------------------------------------------------------- */
 
 	// Initialize actor properties
 	Game_Actor.prototype.initTalentTraits = function() {
@@ -1035,27 +1062,27 @@ FROG.TBT = FROG.TBT || {};
 	 */
 	Game_Actor.prototype.addTalentTraits = function () {
 		this._talentBasedTraits = [];
-		this.addTraitGroupTalent(FROG.TBT.elementRate, 11, "Element ID", "Percentage");
-		this.addTraitGroupTalent(FROG.TBT.debuffRate, 12, "Parameter", "Percentage");
-		this.addTraitGroupTalent(FROG.TBT.stateRate, 13, "State", "Percentage");
-		this.addTraitGroupTalent(FROG.TBT.stateResist, 14, "State", "N/A");
-		this.addTraitGroupTalent(FROG.TBT.parameter, 21, "Parameter", "Percentage");
-		this.addTraitGroupTalent(FROG.TBT.exParameter, 22, "Ex-Parameter", "Percentage");
-		this.addTraitGroupTalent(FROG.TBT.spParameter, 23, "Sp-Parameter", "Percentage");
-		this.addTraitGroupTalent(FROG.TBT.attackElement, 31, "Element ID", "N/A");
-		this.addTraitGroupTalent(FROG.TBT.attackState, 32, "State", "Percentage");
-		this.addTraitGroupTalent(FROG.TBT.attackSpeed, 33, "Attack Speed", "N/A");
-		this.addTraitGroupTalent(FROG.TBT.extraAttacks, 34, "N/A", "Extra Attacks");
-		this.addTraitGroupTalent(FROG.TBT.addSkillType, 41, "Skill Type ID", "N/A");
-		this.addTraitGroupTalent(FROG.TBT.sealSkillType, 42, "Skill Type ID", "N/A");
-		this.addTraitGroupTalent(FROG.TBT.addSkill, 43, "Skill ID", "N/A");
-		this.addTraitGroupTalent(FROG.TBT.sealSkill, 44, "Skill ID", "N/A");
-		this.addTraitGroupTalent(FROG.TBT.equipWeapon, 51, "Weapon ID", "N/A");
-		this.addTraitGroupTalent(FROG.TBT.equipArmor, 52, "Armor ID", "N/A");
-		this.addTraitGroupTalent(FROG.TBT.slotType, 55, "Slot Type", "N/A");
-		this.addTraitGroupTalent(FROG.TBT.actionTimes, 61, "N/A", "Percentage");
-		this.addTraitGroupTalent(FROG.TBT.specialFlag, 62, "Special Flag", "N/A");
-		this.addTraitGroupTalent(FROG.TBT.partyAbility, 64, "Party Ability", "N/A");
+		this.addTraitGroupTalent($dataTalentBasedTraits.elementRate, 11, "elementID", "percentage");
+		this.addTraitGroupTalent($dataTalentBasedTraits.debuffRate, 12, "parameter", "percentage");
+		this.addTraitGroupTalent($dataTalentBasedTraits.stateRate, 13, "state", "percentage");
+		this.addTraitGroupTalent($dataTalentBasedTraits.stateResist, 14, "state", "N/A");
+		this.addTraitGroupTalent($dataTalentBasedTraits.parameter, 21, "parameter", "percentage");
+		this.addTraitGroupTalent($dataTalentBasedTraits.exParameter, 22, "exParameter", "percentage");
+		this.addTraitGroupTalent($dataTalentBasedTraits.spParameter, 23, "spParameter", "percentage");
+		this.addTraitGroupTalent($dataTalentBasedTraits.attackElement, 31, "elementID", "N/A");
+		this.addTraitGroupTalent($dataTalentBasedTraits.attackState, 32, "state", "percentage");
+		this.addTraitGroupTalent($dataTalentBasedTraits.attackSpeed, 33, "attackSpeed", "N/A");
+		this.addTraitGroupTalent($dataTalentBasedTraits.extraAttacks, 34, "N/A", "extraAttacks");
+		this.addTraitGroupTalent($dataTalentBasedTraits.addSkillType, 41, "skillTypeID", "N/A");
+		this.addTraitGroupTalent($dataTalentBasedTraits.sealSkillType, 42, "skillTypeID", "N/A");
+		this.addTraitGroupTalent($dataTalentBasedTraits.addSkill, 43, "skillID", "N/A");
+		this.addTraitGroupTalent($dataTalentBasedTraits.sealSkill, 44, "skillID", "N/A");
+		this.addTraitGroupTalent($dataTalentBasedTraits.equipWeapon, 51, "weaponID", "N/A");
+		this.addTraitGroupTalent($dataTalentBasedTraits.equipArmor, 52, "armorID", "N/A");
+		this.addTraitGroupTalent($dataTalentBasedTraits.slotType, 55, "slotType", "N/A");
+		this.addTraitGroupTalent($dataTalentBasedTraits.actionTimes, 61, "N/A", "percentage");
+		this.addTraitGroupTalent($dataTalentBasedTraits.specialFlag, 62, "specialFlag", "N/A");
+		this.addTraitGroupTalent($dataTalentBasedTraits.partyAbility, 64, "partyAbility", "N/A");
         if ($dataTalents) $dataTalents.traitRewardsImported = true;
 	}
 
@@ -1066,48 +1093,49 @@ FROG.TBT = FROG.TBT || {};
 	 * @param {string} valueLbl - The plugin parameter property for the value property
 	 */
 	Game_Actor.prototype.addTraitGroupTalent = function (traitArray, code, dataLbl, valueLbl) {
+        var self = this;
 		if (traitArray && traitArray.length > 0) {
 			for (var i=0; i<traitArray.length; i++) {
-				var trait = JSON.parse(traitArray[i]);
-				if (!trait["Talent Abbr"] || isNaN(trait["Start Rank"]) || isNaN(trait["End Rank"])) continue;
-                var name = trait["Name"] || "";
-				var abbr = trait["Talent Abbr"].toLowerCase().trim();
-				var startRank = parseInt(trait["Start Rank"]);
-				var endRank = parseInt(trait["End Rank"]);
-				var dataId = (dataLbl !== "N/A" && isNaN(trait[dataLbl]) == false) ? parseInt(trait[dataLbl]) : 0;
-				var value = (valueLbl !== "N/A" && isNaN(trait[valueLbl]) == false) ? parseInt(trait[valueLbl]) : null;
-				if (valueLbl == "Percentage" && isNaN(value) == false) {
+				var trait = traitArray[i];
+				if (!trait.talentAbbr || isNaN(trait.startRank) || isNaN(trait.endRank)) continue;
+
+				var abbr = trait.talentAbbr.toLowerCase().trim();
+				var dataId = (dataLbl !== "N/A" && !isNaN(trait[dataLbl])) ? parseInt(trait[dataLbl]) : 0;
+				var value = (valueLbl !== "N/A" && !isNaN(trait[valueLbl])) ? parseInt(trait[valueLbl]) : null;
+				if (valueLbl == "percentage" && isNaN(value) == false) {
 					value = value / 100;
 				}
 
-				for (var j in this._talents) {
-					var talent = this._talents[j];
-					if (talent.abbr == abbr && talent.ranks >= startRank && talent.ranks < endRank) {
-						if (value !== null) {
-							this._talentBasedTraits.push({
-								code: code,
-								dataId: dataId,
-								value: value
-							});
-						}
-						else {
-							this._talentBasedTraits.push({
-								code: code,
-								dataId: dataId
-							});
-						}
+                Object.keys(this._talents).forEach(function(key, index) {
+                    if (key) {
+                        var talent = self._talents[key];
+    					if (key == abbr && talent.ranks >= trait.startRank && talent.ranks < trait.endRank) {
+    						if (value !== null) {
+    							self._talentBasedTraits.push({
+    								code: code,
+    								dataId: dataId,
+    								value: value
+    							});
+    						}
+    						else {
+    							self._talentBasedTraits.push({
+    								code: code,
+    								dataId: dataId
+    							});
+    						}
+                        }
 					}
-				}
+                });
 
                 // Import trait rewards for FROG_TalentCore
-                if ($dataTalents && !$dataTalents.traitRewardsImported && name && startRank > 0) {
+                if ($dataTalents && !$dataTalents.traitRewardsImported && trait.name && trait.startRank > 0) {
                     if (!$dataTalents.traitRewards) $dataTalents.traitRewards = [];
                     if (!$dataTalents.traitRewards[abbr]) $dataTalents.traitRewards[abbr] = [];
 
                     $dataTalents.traitRewards[abbr].push({
-                        name: name,
-                        rank: startRank,
-                        end: endRank
+                        name: trait.name,
+                        rank: trait.startRank,
+                        end: trait.endRank
                     });
                 }
 			}
