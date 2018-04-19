@@ -96,3 +96,4 @@ This plugin can be used in commercial or non-commercial projects.  Credit Frogbo
 ## Changelog
 * Version 1.0 - Initial release
 * Version 1.1 - Notifies the player what abilities they'll learn when ranking up
+* Version 1.2 - Alter and save $dataTalentBasedTraits object
